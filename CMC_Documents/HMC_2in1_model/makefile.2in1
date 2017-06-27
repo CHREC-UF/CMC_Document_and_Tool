@@ -1,0 +1,118 @@
+EXTRA_DEFINES    := +define+TWO_IN_ONE
+SVSEED           := "random"
+TEST             := tests/hmc_rand_req.sv
+FILE_LIST        := hmc_2in1_bfm.f 
+
+# Random request test parameters 
+#
+# Number of transactions
+RAND_NUM_TXN     ?= 10000
+# Read/Write ratio
+RAND_RW          ?= 50
+# Only issue requests on link 0 (useful for debug)
+RAND_SINGLE_LINK ?= 0
+RAND_TXN_FLAGS   := +num_txn=${RAND_NUM_TXN} +read_percent=${RAND_RW} +single_link_only=${RAND_SINGLE_LINK} +nop_mean=0 +no_atomics=1
+
+ifeq ($(VERBOSE), NO)
+	TEE = >
+else
+	TEE = | tee
+endif
+
+ifeq ($(MULTICUBE), 1) 
+	TEST      := tests/hmc_rand_req_multicube.sv
+	FILE_LIST := hmc_2in1_multicube_bfm.f 
+endif
+
+# Flit interface has not been tested; use at your own risk 
+ifeq ($(SERDES), FLIT)
+	EXTRA_DEFINES += +define+FLIT_INTERFACE
+endif
+
+
+questa: HMC_SYSTEMC_LIB     := ${CURDIR}/sysc/libhmcsim-questa/lib/
+questa: HMC_SYSTEMC_INCLUDE := ${CURDIR}/sysc/libhmcsim-questa/include/
+questa: LD_LIBRARY_PATH     := ${HMC_SYSTEMC_LIB}:${LD_LIBRARY_PATH}
+questa: sysc/libhmcsim-questa/lib/libhmcsim.so sysc/hmc.sv sysc/hmc_2_in_1_wrapper.cpp
+	if [ -d "work" ]; then vdel -all; fi
+	vlib work 
+	sccom -64 -g -I${HMC_SYSTEMC_INCLUDE} -DSC_INCLUDE_DYNAMIC_PROCESSES -DMENTOR sysc/hmc_2_in_1_wrapper.cpp
+	sccom -64 -link -L${HMC_SYSTEMC_LIB} -lhmcsim
+	qverilog -64 -mfcu ${EXTRA_DEFINES} -f ${FILE_LIST} ${TEST}  -l run-questa.txt -R +define+MODEL_TECH ${RAND_TXN_FLAGS} -sv_seed ${SVSEED}
+
+questa-10.4: HMC_SYSTEMC_LIB     := ${CURDIR}/sysc/libhmcsim-questa-10.4/lib/
+questa-10.4: HMC_SYSTEMC_INCLUDE := ${CURDIR}/sysc/libhmcsim-questa-10.4/include/
+questa-10.4: LD_LIBRARY_PATH     := ${HMC_SYSTEMC_LIB}:${LD_LIBRARY_PATH}
+questa-10.4: sysc/libhmcsim-questa-10.4/lib/libhmcsim.so sysc/hmc.sv sysc/hmc_2_in_1_wrapper.cpp
+	if [ -d "work" ]; then vdel -all; fi
+	vlib work 
+	sccom -64 -g -I${HMC_SYSTEMC_INCLUDE} -DSC_INCLUDE_DYNAMIC_PROCESSES -DMENTOR sysc/hmc_2_in_1_wrapper.cpp
+	sccom -64 -link -L${HMC_SYSTEMC_LIB} -lhmcsim
+	qverilog -64 -mfcu ${EXTRA_DEFINES} -f ${FILE_LIST} ${TEST}  -l run-questa.txt -R +define+MODEL_TECH ${RAND_TXN_FLAGS} -sv_seed ${SVSEED}
+
+questa-10.5: HMC_SYSTEMC_LIB     := ${CURDIR}/sysc/libhmcsim-questa-10.5/lib/
+questa-10.5: HMC_SYSTEMC_INCLUDE := ${CURDIR}/sysc/libhmcsim-questa-10.5/include/
+questa-10.5: LD_LIBRARY_PATH     := ${HMC_SYSTEMC_LIB}:${LD_LIBRARY_PATH}
+questa-10.5: sysc/libhmcsim-questa-10.5/lib/libhmcsim.so sysc/hmc.sv sysc/hmc_2_in_1_wrapper.cpp
+	if [ -d "work" ]; then vdel -all; fi
+	vlib work 
+	sccom -64 -g -I${HMC_SYSTEMC_INCLUDE} -DSC_INCLUDE_DYNAMIC_PROCESSES -DMENTOR sysc/hmc_2_in_1_wrapper.cpp
+	sccom -64 -link -L${HMC_SYSTEMC_LIB} -lhmcsim
+	qverilog -64 -mfcu ${EXTRA_DEFINES} -f ${FILE_LIST} ${TEST}  -l run-questa.txt -R +define+MODEL_TECH ${RAND_TXN_FLAGS} -sv_seed ${SVSEED}
+
+irun-13.10: HMC_SYSTEMC_LIB     := ${CURDIR}/sysc/libhmcsim-irun-13.10/lib/
+irun-13.10: HMC_SYSTEMC_INCLUDE := ${CURDIR}/sysc/libhmcsim-irun-13.10/include/
+irun-13.10: LD_LIBRARY_PATH     := ${HMC_SYSTEMC_LIB}:${LD_LIBRARY_PATH}
+irun-13.10: sysc/libhmcsim-irun-13.10/lib/libhmcsim.so sysc/hmc.sv sysc/hmc_2_in_1_wrapper.cpp
+	 irun -64bit ${EXTRA_DEFINES} -f ${FILE_LIST} ${TEST} -svseed ${SVSEED} -I${HMC_SYSTEMC_INCLUDE} -scautoshell verilog -sysc sysc/hmc_2_in_1_wrapper.cpp -L${HMC_SYSTEMC_LIB} -lhmcsim -work lib -l run-irun.txt ${RAND_TXN_FLAGS}
+
+irun-14.10: HMC_SYSTEMC_LIB     := ${CURDIR}/sysc/libhmcsim-irun-14.10/lib/
+irun-14.10: HMC_SYSTEMC_INCLUDE := ${CURDIR}/sysc/libhmcsim-irun-14.10/include/
+irun-14.10: LD_LIBRARY_PATH     := ${HMC_SYSTEMC_LIB}:${LD_LIBRARY_PATH}
+irun-14.10: sysc/libhmcsim-irun-14.10/lib/libhmcsim.so sysc/hmc.sv sysc/hmc_2_in_1_wrapper.cpp
+	 irun -64bit ${EXTRA_DEFINES} -f ${FILE_LIST} ${TEST} -svseed ${SVSEED} -I${HMC_SYSTEMC_INCLUDE} -scautoshell verilog -sysc sysc/hmc_2_in_1_wrapper.cpp -L${HMC_SYSTEMC_LIB} -lhmcsim -work lib -l run-irun.txt ${RAND_TXN_FLAGS}
+
+irun-15.20: HMC_SYSTEMC_LIB     := ${CURDIR}/sysc/libhmcsim-irun-15.20/lib/
+irun-15.20: HMC_SYSTEMC_INCLUDE := ${CURDIR}/sysc/libhmcsim-irun-15.20/include/
+irun-15.20: LD_LIBRARY_PATH     := ${HMC_SYSTEMC_LIB}:${LD_LIBRARY_PATH}
+irun-15.20: sysc/libhmcsim-irun-15.20/lib/libhmcsim.so sysc/hmc.sv sysc/hmc_2_in_1_wrapper.cpp
+	 irun -64bit ${EXTRA_DEFINES} -f ${FILE_LIST} ${TEST} -svseed ${SVSEED} -I${HMC_SYSTEMC_INCLUDE} -scautoshell verilog -sysc sysc/hmc_2_in_1_wrapper.cpp -L${HMC_SYSTEMC_LIB} -lhmcsim -work lib -l run-irun.txt ${RAND_TXN_FLAGS}
+
+################################# NOTE ##########################################
+# VCS requires you to download a compatible compiler from their ftp
+# server and have it in your $PATH. See readme.2in1.txt for details. 
+#################################################################################
+
+vcs-2012: HMC_SYSTEMC_INCLUDE := ${CURDIR}/sysc/libhmcsim-vcs-2012/include/
+vcs-2012: HMC_SYSTEMC_LIB     := ${CURDIR}/sysc/libhmcsim-vcs-2012/lib/
+vcs-2012: LD_LIBRARY_PATH     := ${HMC_SYSTEMC_LIB}:${LD_LIBRARY_PATH}
+vcs-2012: sysc/libhmcsim-vcs-2012/lib/libhmcsim.so sysc/hmc.sv sysc/hmc_2_in_1_wrapper.cpp
+	syscan -V -full64 -sysc=230    -cflags -I${HMC_SYSTEMC_INCLUDE} -cflags -I./sysc/ sysc/hmc_2_in_1_wrapper.cpp:hmc_2_in_1_wrapper 
+	vcs    -V -full64 -sysc=2.3 ${EXTRA_DEFINES} -sysc=adjust_timeres -sverilog  -L${HMC_SYSTEMC_LIB} -lhmcsim -f ${FILE_LIST} ${TEST} | tee compile-vcs.txt
+	./simv ${RAND_TXN_FLAGS} +ntb_random_seed=${SVSEED} +plusarg_save ${TEE} run-vcs.txt 
+
+vcs-2013: HMC_SYSTEMC_INCLUDE := ${CURDIR}/sysc/libhmcsim-vcs-2013/include/
+vcs-2013: HMC_SYSTEMC_LIB     := ${CURDIR}/sysc/libhmcsim-vcs-2013/lib/
+vcs-2013: LD_LIBRARY_PATH     := ${HMC_SYSTEMC_LIB}:${LD_LIBRARY_PATH}
+vcs-2013: sysc/libhmcsim-vcs-2013/lib/libhmcsim.so sysc/hmc.sv sysc/hmc_2_in_1_wrapper.cpp
+	syscan -V -full64 -sysc=230    -cflags -I${HMC_SYSTEMC_INCLUDE} -cflags -I./sysc/ sysc/hmc_2_in_1_wrapper.cpp:hmc_2_in_1_wrapper 
+	vcs    -V -full64 -sysc=2.3 ${EXTRA_DEFINES} -sysc=adjust_timeres -sverilog  -L${HMC_SYSTEMC_LIB} -lhmcsim -f ${FILE_LIST} ${TEST} | tee compile-vcs.txt
+	./simv ${RAND_TXN_FLAGS} +ntb_random_seed=${SVSEED} +plusarg_save ${TEE} run-vcs.txt 
+
+vcs-2014: HMC_SYSTEMC_INCLUDE := ${CURDIR}/sysc/libhmcsim-vcs-2014/include/
+vcs-2014: HMC_SYSTEMC_LIB     := ${CURDIR}/sysc/libhmcsim-vcs-2014/lib/
+vcs-2014: LD_LIBRARY_PATH     := ${HMC_SYSTEMC_LIB}:${LD_LIBRARY_PATH}
+vcs-2014: sysc/libhmcsim-vcs-2014/lib/libhmcsim.so sysc/hmc.sv sysc/hmc_2_in_1_wrapper.cpp
+	syscan -V -full64 -sysc=230    -cflags -I${HMC_SYSTEMC_INCLUDE} -cflags -I./sysc/ sysc/hmc_2_in_1_wrapper.cpp:hmc_2_in_1_wrapper 
+	vcs    -V -full64 -sysc=2.3 ${EXTRA_DEFINES} -sysc=adjust_timeres -sverilog  -L${HMC_SYSTEMC_LIB} -lhmcsim -f ${FILE_LIST} ${TEST} | tee compile-vcs.txt
+	./simv ${RAND_TXN_FLAGS} +ntb_random_seed=${SVSEED} +plusarg_save ${TEE} run-vcs.txt 
+
+vcs-2016: HMC_SYSTEMC_INCLUDE := ${CURDIR}/sysc/libhmcsim-vcs-2016/include/
+vcs-2016: HMC_SYSTEMC_LIB     := ${CURDIR}/sysc/libhmcsim-vcs-2016/lib/
+vcs-2016: LD_LIBRARY_PATH     := ${HMC_SYSTEMC_LIB}:${LD_LIBRARY_PATH}
+vcs-2016: sysc/libhmcsim-vcs-2016/lib/libhmcsim.so sysc/hmc.sv sysc/hmc_2_in_1_wrapper.cpp
+	syscan -V -full64 -sysc=230    -cflags -I${HMC_SYSTEMC_INCLUDE} -cflags -I./sysc/ sysc/hmc_2_in_1_wrapper.cpp:hmc_2_in_1_wrapper 
+	vcs    -V -full64 -sysc=2.3 ${EXTRA_DEFINES} -sysc=adjust_timeres -sverilog  -L${HMC_SYSTEMC_LIB} -lhmcsim -f ${FILE_LIST} ${TEST} | tee compile-vcs.txt
+	./simv ${RAND_TXN_FLAGS} +ntb_random_seed=${SVSEED} +plusarg_save ${TEE} run-vcs.txt 
+
+.PHONY: irun-13.10 irun-14.10 irun-15.20 vcs-2014 vcs-2013 vcs-2012 questa questa-10.4 questa-10.5

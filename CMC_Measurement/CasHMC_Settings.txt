@@ -1,0 +1,18 @@
+Some Important Settings:
+old: NUM_LINKS = 4;
+new: NUM_LINKS = 1;
+
+old: CPU_CLK_PERIOD = 0.5;		// for CPU its 0.5ns(i.e 2Ghz)
+new: CPU_CLK_PERIOD = 6;        	// for Co-processor it should be 6ns(167MHz)
+
+TRANSACTION_SIZE = 32;			// 32 bytes
+
+LINK_WIDTH = 16;			// (16-lanes) This is the supported full width 
+
+LINK_SPEED = 30;			// (Gb/s) Supported max bandwidth
+
+NUM_VAULTS = 32;			// Number of Vaults
+
+NUM_BANKS = 8;				// Number of Banks per vault; one bank size is 16MB
+
+MEMORY_DENSITY = 4;			// HMC Size = 4GB =>  NUM_VAULTS*NUM_BANKS*16MB

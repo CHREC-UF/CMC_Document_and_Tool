@@ -1,0 +1,145 @@
+//config.def file necessary for SystemC model of HMC to operate
+//
+//format : PARAMETER_NAME=value
+//
+//Please direct questions/comments/concerns to hmcsupport@micron.com
+
+//
+//[simulation]
+//
+//turns on writing statistics to an output file
+//[default:false]
+DUMP_STATS_FILE=false
+
+//specifies the name of the output statistics file
+//[default:stats.txt]
+//Note : No quotes around filename
+STATS_FILENAME=stats.txt
+
+//
+//[generator]
+//
+//specifies the number of traffic generators attached to the host controller modul
+//[default:2, min:1, max:4]
+NUM_GENERATORS=2
+
+//specifies the number of requests each traffic generator should issue
+//[default:10000, min:1, max:-]
+NUM_REQUESTS=10000
+
+//specifies the type of traffic issued from each generator
+//0:Random to any vault
+//1:Random to local vaults
+//2:Round-robin to local vaults and bank
+//3:Random Local+Adjacent (2 link)
+//4:Round-robin to Local+Adjacent (2 link)
+REQUEST_STREAM=3
+
+//specifies if the generated address should be 32B aligned.  unaligned addresses require an extra CAS
+//[default:true]
+ALIGNED_32B=true
+
+//specifies the read-write % of the request stream
+//[default:50, min:0, max:100]
+PERCENTAGE_READ=50
+
+//specifies the percetage of each read request size in the generated stream.
+//[sum of these values should be 100]
+PERCENTAGE_RD_16B=0
+PERCENTAGE_RD_32B=0
+PERCENTAGE_RD_48B=0
+PERCENTAGE_RD_64B=100
+PERCENTAGE_RD_80B=0
+PERCENTAGE_RD_96B=0
+PERCENTAGE_RD_112B=0
+PERCENTAGE_RD_128B=0
+
+//specifies the percetage of each write request size in the generated stream.
+//[sum of these values should be 100]
+PERCENTAGE_WR_16B=0
+PERCENTAGE_WR_32B=0
+PERCENTAGE_WR_48B=0
+PERCENTAGE_WR_64B=100
+PERCENTAGE_WR_80B=0
+PERCENTAGE_WR_96B=0
+PERCENTAGE_WR_112B=0
+PERCENTAGE_WR_128B=0
+
+//
+//[trace reader]
+//
+//enables the user of trace reader
+//[default:false]
+USE_TRACE=false
+
+//points to the input trace file
+//[default:test.trc - should point to trace file (without quotes)]
+//NOTE : Up to 4 different trace files can be used at once.  When using multiple trace files, ensure that NUM_GENERATORS 
+//       is the same as the number of traces you’d like to use and that HOST_MAPPING is set to the value 2
+TRACE_FILENAME_0=test0.trc
+TRACE_FILENAME_1=test1.trc
+TRACE_FILENAME_2=test2.trc
+TRACE_FILENAME_3=test3.trc
+
+//turns on trace file reader debug
+//[default:false]
+TRACE_DEBUG=false
+
+//
+//[host controller]
+//
+//specifies the depth (in flits) of each request buffer.  each link has an independent request buffer.
+//[default:384, min:9, max:something reasonable]
+REQUEST_BUFFER_SIZE=384
+
+//available tags associated with each link. 
+//[default:512, min:1, max:512]
+TAGS_PER_LINK=512
+
+//available tokens associated with each link
+//[default:219, min:9, max:219]
+TOKENS_PER_LINK=219
+
+//specifies whether or not a write request should consume a tag and return a response (true = no tags with no responses)
+//[default:true]
+POSTED_WRITES=false
+
+//specifies if the host controller requires tokens on the return path (typically set to true)
+//[default:true]
+RESPONSE_OPEN_LOOP=true
+
+//number of cycles on the link between request
+//[default:0, min:0, max:-]
+REQUEST_SPACING=0
+
+//determines how the host assigns a request to the link
+//[default:2, min:0, max:2]
+HOST_MAPPING=2
+//0 - random link assignment
+//1 - map to link for local vaults only (based on address mapping)
+//2 - generator index assigned to link index
+
+//
+//[link]
+//
+//link rate in Gbps
+//[default:15, accepted:10, 12.5, 15]
+LINK_SPEED=15.0
+
+//number of lanes for the request and response paths of each link
+//[default::16, accepted:8, 16]
+LINK_0_WIDTH=16
+LINK_1_WIDTH=16
+LINK_2_WIDTH=16
+LINK_3_WIDTH=16
+
+//
+//[vaultcontroller]
+//
+//dictates address mapping (see spec)
+//[default:64, accepted:32,64, or 128]
+MAX_BLOCK_SIZE=64
+
+//operating temperature in Celcius
+//[default:0, accepted:Tj<=105)]
+Tj=85

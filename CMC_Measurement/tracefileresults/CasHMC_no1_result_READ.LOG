@@ -1,0 +1,106 @@
+****************************************************************
+*                      CasHMC version 1.1                      *
+*                       result log file                        *
+*            Date : 2017/01/23      Time : 18:15:29            *
+****************************************************************
+
+- Trace type : file
+- Trace file : ./YuZouTraceFiles/trace_files/read_memory_trace.trc
+
+  ============= CasHMC statistic result =============
+
+  Elapsed epoch : 300
+  Elapsed clock : 300000000
+
+        HMC bandwidth : 9.93411e-05 GB/s  (Considered only data size)
+       Link bandwidth : 0.000818769 GB/s  (Included flow packet)
+ Effec Link bandwidth : 9.93411e-05 GB/s  (Data bandwidth regardless of packet header and tail)
+     Link utilization : 0.000170577 %     (Max link bandwidth : 480 GB/S)
+
+    Tran latency mean : 483.065 ns
+                 std  : 268.833 ns
+                 max  : 991.5 ns
+                 min  : 36 ns
+    Link latency mean : 479.504 ns
+                 std  : 268.835 ns
+                 max  : 988 ns
+                 min  : 32.5 ns
+   Vault latency mean : 23.2 ns
+                 std  : 0 ns
+                 max  : 23.2 ns
+                 min  : 23.2 ns
+   Retry latency mean : 0 ns
+                 std  : 0 ns
+                 max  : 0 ns
+                 min  : 0 ns
+
+           Read count : 1000
+          Write count : 0
+         Atomic count : 0
+        Request count : 1000
+       Response count : 1000
+           Flow count : 5242
+    Transaction count : 1000
+    Error abort count : 0
+    Error retry count : 0
+
+  ┌─────────────  [Link 0]
+  │              Read per link : 250
+  │             Write per link : 0
+  │            Atomic per link : 0
+  │           Request per link : 250
+  │          Response per link : 250
+  │              Flow per link : 1324
+  │       Error abort per link : 0
+  │       Downstream Bandwidth : 9.17912e-05 GB/s  (Utilization : 0.000152985 %)
+  │         Upstream Bandwidth : 0.000114242 GB/s  (Utilization : 0.000190404 %)
+  │            Total Bandwidth : 0.000206033 GB/s  (Utilization : 0.000171694 %)
+  │ Downstream effec Bandwidth :       0 GB/s
+  │   Upstream effec Bandwidth : 2.48353e-05 GB/s
+  └───── Total effec Bandwidth : 2.48353e-05 GB/s
+
+  ┌─────────────  [Link 1]
+  │              Read per link : 250
+  │             Write per link : 0
+  │            Atomic per link : 0
+  │           Request per link : 250
+  │          Response per link : 250
+  │              Flow per link : 1292
+  │       Error abort per link : 0
+  │       Downstream Bandwidth : 8.9705e-05 GB/s  (Utilization : 0.000149508 %)
+  │         Upstream Bandwidth : 0.000113149 GB/s  (Utilization : 0.000188582 %)
+  │            Total Bandwidth : 0.000202854 GB/s  (Utilization : 0.000169045 %)
+  │ Downstream effec Bandwidth :       0 GB/s
+  │   Upstream effec Bandwidth : 2.48353e-05 GB/s
+  └───── Total effec Bandwidth : 2.48353e-05 GB/s
+
+  ┌─────────────  [Link 2]
+  │              Read per link : 250
+  │             Write per link : 0
+  │            Atomic per link : 0
+  │           Request per link : 250
+  │          Response per link : 250
+  │              Flow per link : 1320
+  │       Error abort per link : 0
+  │       Downstream Bandwidth : 9.22879e-05 GB/s  (Utilization : 0.000153813 %)
+  │         Upstream Bandwidth : 0.000113348 GB/s  (Utilization : 0.000188914 %)
+  │            Total Bandwidth : 0.000205636 GB/s  (Utilization : 0.000171363 %)
+  │ Downstream effec Bandwidth :       0 GB/s
+  │   Upstream effec Bandwidth : 2.48353e-05 GB/s
+  └───── Total effec Bandwidth : 2.48353e-05 GB/s
+
+  ┌─────────────  [Link 3]
+  │              Read per link : 250
+  │             Write per link : 0
+  │            Atomic per link : 0
+  │           Request per link : 250
+  │          Response per link : 250
+  │              Flow per link : 1306
+  │       Error abort per link : 0
+  │       Downstream Bandwidth : 9.02017e-05 GB/s  (Utilization : 0.000150336 %)
+  │         Upstream Bandwidth : 0.000114044 GB/s  (Utilization : 0.000190073 %)
+  │            Total Bandwidth : 0.000204245 GB/s  (Utilization : 0.000170204 %)
+  │ Downstream effec Bandwidth :       0 GB/s
+  │   Upstream effec Bandwidth : 2.48353e-05 GB/s
+  └───── Total effec Bandwidth : 2.48353e-05 GB/s
+
